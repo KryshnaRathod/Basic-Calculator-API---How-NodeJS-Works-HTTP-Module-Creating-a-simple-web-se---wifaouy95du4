@@ -15,106 +15,99 @@ app.get('/', (req, res) => {
   res.send('Hello world!');
 });
 
-// Addition
+// POST request for addition
 app.post('/add', (req, res) => {
-  const num1 = req.body.num1;
-  const num2 = req.body.num2;
-
-  if (!isValidNumber(num1) || !isValidNumber(num2)) {
-    res.json({ status: 'error', message: 'Invalid data types' });
-    return;
-  }
-
+  const { num1, num2 } = req.body;
   const sum = num1 + num2;
 
-  if (isOverflow(sum)) {
-    res.json({ status: 'error', message: 'Overflow' });
-    return;
+  if (isNaN(sum) || sum < -1000000 || sum > 1000000) {
+    return res.json({
+      status: 'error',
+      message: 'Overflow'
+    });
   }
 
-  res.json({ status: 'success', message: 'The sum of given two numbers', sum: sum });
+  res.json({
+    status: 'success',
+    message: 'The sum of the given two numbers',
+    sum: sum
+  });
 });
 
-// Subtraction
+// POST request for subtraction
 app.post('/sub', (req, res) => {
-  const num1 = req.body.num1;
-  const num2 = req.body.num2;
-
-  if (!isValidNumber(num1) || !isValidNumber(num2)) {
-    res.json({ status: 'error', message: 'Invalid data types' });
-    return;
-  }
-
+  const { num1, num2 } = req.body;
   const difference = num1 - num2;
 
-  if (isUnderflow(difference)) {
-    res.json({ status: 'error', message: 'Underflow' });
-    return;
+  if (isNaN(difference) || difference < -1000000 || difference > 1000000) {
+    return res.json({
+      status: 'error',
+      message: 'Underflow'
+    });
   }
 
-  res.json({ status: 'success', message: 'The difference of given two numbers', difference: difference });
+  res.json({
+    status: 'success',
+    message: 'The difference of the given two numbers',
+    difference: difference
+  });
 });
 
-// Multiplication
+// POST request for multiplication
 app.post('/multiply', (req, res) => {
-  const num1 = req.body.num1;
-  const num2 = req.body.num2;
-
-  if (!isValidNumber(num1) || !isValidNumber(num2)) {
-    res.json({ status: 'error', message: 'Invalid data types' });
-    return;
-  }
-
+  const { num1, num2 } = req.body;
   const result = num1 * num2;
 
-  if (isOverflow(result)) {
-    res.json({ status: 'error', message: 'Overflow' });
-    return;
+  if (isNaN(result) || result < -1000000 || result > 1000000) {
+    return res.json({
+      status: 'error',
+      message: 'Underflow'
+    });
   }
 
-  res.json({ status: 'success', message: 'The product of given numbers', result: result });
+  res.json({
+    status: 'success',
+    message: 'The product of the given numbers',
+    result: result
+  });
 });
 
-// Division
+// POST request for division
 app.post('/divide', (req, res) => {
-  const num1 = req.body.num1;
-  const num2 = req.body.num2;
-
-  if (!isValidNumber(num1) || !isValidNumber(num2)) {
-    res.json({ status: 'error', message: 'Invalid data types' });
-    return;
-  }
+  const { num1, num2 } = req.body;
 
   if (num2 === 0) {
-    res.json({ status: 'error', message: 'Cannot divide by zero' });
-    return;
+    return res.json({
+      status: 'error',
+      message: 'Cannot divide by zero'
+    });
   }
 
   const result = num1 / num2;
 
-  if (isUnderflow(result)) {
-    res.json({ status: 'error', message: 'Underflow' });
-    return;
+  if (isNaN(result) || result < -1000000 || result > 1000000) {
+    return res.json({
+      status: 'error',
+      message: 'Underflow'
+    });
   }
 
-  res.json({ status: 'success', message: 'The division of given numbers', result: result });
+  res.json({
+    status: 'success',
+    message: 'The division of the given numbers',
+    result: result
+  });
 });
 
-// Helper functions
+// Handle invalid routes
+app.use((req, res) => {
+  res.status(404).json({
+    status: 'error',
+    message: 'Invalid route'
+  });
+});
 
-function isValidNumber(num) {
-  return typeof num === 'number' && !isNaN(num);
-}
 
-function isOverflow(num) {
-  const maxLimit = 1000000; // 1M
-  return num > maxLimit;
-}
-
-function isUnderflow(num) {
-  const minLimit = -1000000; // -1M
-  return num < minLimit;
-}
 
 
 
