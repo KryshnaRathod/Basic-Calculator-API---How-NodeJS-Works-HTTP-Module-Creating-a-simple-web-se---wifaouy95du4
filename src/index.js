@@ -11,127 +11,108 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use(bodyParser.json())
-app.get('/', (req, res) => {
-  res.send('Hello world!');
+// your code goes here
+app.get("/", (req, res) => {
+  return res.json("Hello World!");
 });
 
-// POST request to perform addition
-app.post('/add', (req, res) => {
+app.post("/add", (req, res) => {
   const { num1, num2 } = req.body;
-
-  if (typeof num1 !== 'number' || typeof num2 !== 'number') {
+  if (typeof num1 == "string" || typeof num2 == "string") {
     return res.json({
-      status: 'error',
-      message: 'Invalid data types'
+      status: "error",
+      message: "Invalid data types",
     });
   }
 
-  const sum = num1 + num2;
-
-  if (sum > 1000000) {
+  const result = num1 + num2;
+  if (num1 > 1000000 || num2 > 1000000 || result > 1000000) {
     return res.json({
-      status: 'error',
-      message: 'Overflow'
+      status: "error",
+      message: "Overflow",
     });
   }
-
-  res.json({
-    status: 'success',
-    message: 'The sum of given two numbers',
-    sum: sum
+  return res.json({
+    status: "success",
+    message: "the sum of given two numbers",
+    sum: result,
   });
 });
 
-// POST request to perform subtraction
-app.post('/sub', (req, res) => {
+app.post("/sub", (req, res) => {
   const { num1, num2 } = req.body;
-
-  if (typeof num1 !== 'number' || typeof num2 !== 'number') {
+  console.log(req.body);
+  if (typeof num1 == "string" || typeof num2 == "string") {
     return res.json({
-      status: 'error',
-      message: 'Invalid data types'
+      status: "error",
+      message: "Invalid data types",
     });
   }
 
-  const difference = num1 - num2;
-
-  if (difference < -1000000) {
+  const sub = num1 - num2;
+  if (sub < -1000000) {
     return res.json({
-      status: 'error',
-      message: 'Underflow'
+      status: "error",
+      message: "Underflow",
     });
   }
-
-  res.json({
-    status: 'success',
-    message: 'The difference of given two numbers',
-    difference: difference
+  return res.json({
+    status: "sub",
+    message: "the difference of given two numbers",
+    difference: sub,
   });
 });
 
-// POST request to perform multiplication
-app.post('/multiply', (req, res) => {
+app.post("/multiply", (req, res) => {
   const { num1, num2 } = req.body;
-
-  if (typeof num1 !== 'number' || typeof num2 !== 'number') {
+  if (typeof num1 == "string" && typeof num2 == "string") {
     return res.json({
-      status: 'error',
-      message: 'Invalid data types'
+      status: "error",
+      message: "Invalid data types",
     });
   }
 
-  const result = num1 * num2;
-
-  if (result > 1000000) {
+  const mult = num1 * num2;
+  if (mult > 1000000) {
     return res.json({
-      status: 'error',
-      message: 'Overflow'
+      status: "error",
+      message: "Overflow",
     });
   }
-
-  res.json({
-    status: 'success',
-    message: 'The product of given numbers',
-    result: result
+  return res.json({
+    status: "success",
+    message: "The product of given numbers",
+    result: mult,
   });
 });
 
-// POST request to perform division
-app.post('/divide', (req, res) => {
+app.post("/divide", (req, res) => {
   const { num1, num2 } = req.body;
-
-  if (typeof num1 !== 'number' || typeof num2 !== 'number') {
+  if (typeof num1 == "string" || typeof num2 == "string") {
     return res.json({
-      status: 'error',
-      message: 'Invalid data types'
+      status: "error",
+      message: "Invalid data types",
     });
   }
-
   if (num2 === 0) {
     return res.json({
-      status: 'error',
-      message: 'Cannot divide by zero'
+      status: "error",
+      message: "Cannot divide by zero",
     });
   }
-
-  const result = num1 / num2;
-
-  if (result < -1000000) {
+  const div = num1 / num2;
+  if (div > 1000000) {
     return res.json({
-      status: 'error',
-      message: 'Underflow'
+      status: "error",
+      message: "overflow",
     });
   }
-
-  res.json({
-    status: 'success',
-    message: 'The division of given numbers',
-    result: result
+  return res.json({
+    status: "success",
+    message: "The division of given numbers",
+    result: div,
   });
 });
-
-
-
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
 
